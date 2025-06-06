@@ -1,61 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p style="text-align: center"><img src="https://github.com/FakerPHP/Artwork/raw/main/src/socialcard.png" alt="Social card of FakerPHP"></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Faker
 
-## About Laravel
+[![Packagist Downloads](https://img.shields.io/packagist/dm/FakerPHP/Faker)](https://packagist.org/packages/fakerphp/faker)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/FakerPHP/Faker/Tests/main)](https://github.com/FakerPHP/Faker/actions)
+[![Type Coverage](https://shepherd.dev/github/FakerPHP/Faker/coverage.svg)](https://shepherd.dev/github/FakerPHP/Faker)
+[![Code Coverage](https://codecov.io/gh/FakerPHP/Faker/branch/main/graph/badge.svg)](https://codecov.io/gh/FakerPHP/Faker)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Faker is a PHP library that generates fake data for you. Whether you need to bootstrap your database, create good-looking XML documents, fill-in your persistence to stress test it, or anonymize data taken from a production service, Faker is for you.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+It's heavily inspired by Perl's [Data::Faker](https://metacpan.org/pod/Data::Faker), and by Ruby's [Faker](https://rubygems.org/gems/faker).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Getting Started
 
-## Learning Laravel
+### Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Faker requires PHP >= 7.4.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```shell
+composer require fakerphp/faker
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Documentation
 
-## Laravel Sponsors
+Full documentation can be found over on [fakerphp.github.io](https://fakerphp.github.io).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Basic Usage
 
-### Premium Partners
+Use `Faker\Factory::create()` to create and initialize a Faker generator, which can generate data by accessing methods named after the type of data you want.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```php
+<?php
+require_once 'vendor/autoload.php';
 
-## Contributing
+// use the factory to create a Faker\Generator instance
+$faker = Faker\Factory::create();
+// generate data by calling methods
+echo $faker->name();
+// 'Vince Sporer'
+echo $faker->email();
+// 'walter.sophia@hotmail.com'
+echo $faker->text();
+// 'Numquam ut mollitia at consequuntur inventore dolorem.'
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Each call to `$faker->name()` yields a different (random) result. This is because Faker uses `__call()` magic, and forwards `Faker\Generator->$method()` calls to `Faker\Generator->format($method, $attributes)`.
 
-## Code of Conduct
+```php
+<?php
+for ($i = 0; $i < 3; $i++) {
+    echo $faker->name() . "\n";
+}
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+// 'Cyrus Boyle'
+// 'Alena Cummerata'
+// 'Orlo Bergstrom'
+```
 
-## Security Vulnerabilities
+## Automated refactoring
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you already used this library with its properties, they are now deprecated and needs to be replaced by their equivalent methods.
+
+You can use the provided [Rector](https://github.com/rectorphp/rector) config file to automate the work.
+
+Run
+
+```bash
+composer require --dev rector/rector
+```
+
+to install `rector/rector`.
+
+Run
+
+```bash
+vendor/bin/rector process src/ --config vendor/fakerphp/faker/rector-migrate.php
+```
+
+to run `rector/rector`.
+
+*Note:* do not forget to replace `src/` with the path to your source directory.
+
+Alternatively, import the configuration in your `rector.php` file:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Rector\Config;
+
+return static function (Config\RectorConfig $rectorConfig): void {
+    $rectorConfig->import('vendor/fakerphp/faker/rector-migrate.php');
+};
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Faker is released under the MIT License. See [`LICENSE`](LICENSE) for details.
+
+## Backward compatibility promise
+
+Faker is using [Semver](https://semver.org/). This means that versions are tagged
+with MAJOR.MINOR.PATCH. Only a new major version will be allowed to break backward
+compatibility (BC).
+
+Classes marked as `@experimental` or `@internal` are not included in our backward compatibility promise.
+You are also not guaranteed that the value returned from a method is always the
+same. You are guaranteed that the data type will not change.
+
+PHP 8 introduced [named arguments](https://wiki.php.net/rfc/named_params), which
+increased the cost and reduces flexibility for package maintainers. The names of the
+arguments for methods in Faker is not included in our BC promise.

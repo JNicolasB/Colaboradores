@@ -1,76 +1,56 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "name": "fakerphp/faker",
+    "type": "library",
+    "description": "Faker is a PHP library that generates fake data for you.",
+    "keywords": [
+        "faker",
+        "fixtures",
+        "data"
+    ],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "François Zaninotto"
+        }
+    ],
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "php": "^7.4 || ^8.0",
+        "psr/container": "^1.0 || ^2.0",
+        "symfony/deprecation-contracts": "^2.2 || ^3.0"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
-        "laravel/breeze": "^2.3",
-        "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.13",
-        "laravel/sail": "^1.41",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "ext-intl": "*",
+        "bamarni/composer-bin-plugin": "^1.4.1",
+        "doctrine/persistence": "^1.3 || ^2.0",
+        "phpunit/phpunit": "^9.5.26",
+        "symfony/phpunit-bridge": "^5.4.16"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Faker\\": "src/Faker/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Faker\\Test\\": "test/Faker/",
+            "Faker\\Test\\Fixture\\": "test/Fixture/"
         }
     },
-    "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
-        ],
-        "dev": [
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
-        ],
-        "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
-        ]
+    "conflict": {
+        "fzaninotto/faker": "*"
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+    "suggest": {
+        "ext-curl": "Required by Faker\\Provider\\Image to download images.",
+        "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
+        "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
+        "ext-mbstring": "Required for multibyte Unicode string functionality.",
+        "doctrine/orm": "Required to use Faker\\ORM\\Doctrine"
     },
     "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+            "bamarni/composer-bin-plugin": true,
+            "composer/package-versions-deprecated": true
+        },
+        "sort-packages": true
+    }
 }
